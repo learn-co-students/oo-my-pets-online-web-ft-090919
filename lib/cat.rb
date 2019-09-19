@@ -10,6 +10,7 @@ class Cat
     @name = name
     @owner = owner
     @@all << self
+    self
   end
 
 
