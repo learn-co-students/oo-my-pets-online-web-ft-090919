@@ -1,74 +1,66 @@
-require 'pry'
-
+  
 class Owner
-  @@all= []
-  attr_accessor :name, :pets
-  attr_reader :species
+  # code goes here
+  attr_reader :name, :species
 
-  # Instance Methods #
+  @@all = []
 
-  def initialize(species)
-    @species = species
+  def initialize(name)
+    @name = name
+    @species = "human"
     @@all << self
-    @pets = {:dogs => [], :cats => []}
   end
 
   def say_species
-    return "I am a #{@species}."
+    "I am a #{self.species}."
   end
-
-  # Pets #
-
-
-
-  def buy_dog(name_of_dog)
-    @pets[:dogs] << Dog.new(name_of_dog)
-  end
-
-  def buy_cat(name_of_cat)
-    @pets[:cats] << Cat.new(name_of_cat)
-  end
-
-  def walk_dogs
-    @pets.collect do |species, instances|
-      if species == :dogs
-        instances.each do |dog|
-          dog.mood = "happy"
-        end
-      end
-    end
-  end
-
-  def play_with_cats
-    @pets.collect do |species, instances|
-      if species == :cats
-        instances.each do |cat|
-          cat.mood = "happy"
-        end
-      end
-    end
-  end
-
-
-
-  def list_pets
-    num_dogs = @pets[:dogs].size
-    num_cats = @pets[:cats].size
-    return "I have #{num_dogs} dog(s), and #{num_cats} cat(s)."
-  end
-
-  # Class Methods #
 
   def self.all
     @@all
   end
 
-  def self.reset_all
-    @@all.clear
+  def self.count
+    self.all.count
   end
 
-  def self.count
-    @@all.size
+  def self.reset_all
+    self.all.clear
   end
-end
+
+  def cats
+    Cat.all.select{|cat| cat.owner == self}
+  end
+
+  def dogs
+    Dog.all.select{|dog| dog.owner == self}
+  end
+
+  def buy_cat(name)
+    Cat.new(name, self)
+  end
+
+  def buy_dog(name)
+    Dog.new(name, self)
+  end
+
+  def walk_dogs
+    self.dogs.each { |dog| dog.mood = "happy" }
+  end
+
+  def feed_cats
+    self.cats.each { |cat| cat.mood = "happy" }
+  end
+
+  def sell_pets
+    pets = self.dogs + self.cats
+
+    pets.each do |pet|
+      pet.mood = "nervous"
+      pet.owner = nil
+    end
+  end
+
+  def list_pets
+    "I have #{self.dogs.count} dog(s), and #{self.cats.count} cat(s)."
+  end
 end
