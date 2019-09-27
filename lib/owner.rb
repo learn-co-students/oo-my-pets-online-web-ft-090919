@@ -33,7 +33,7 @@ attr_reader :name, :species
 
   def cats
     var = Cat.all.select {|cat| cat.owner = self}
-    var.shift(5)
+
   end
 
 
