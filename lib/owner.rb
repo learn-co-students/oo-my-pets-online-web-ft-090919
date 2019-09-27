@@ -62,17 +62,22 @@ attr_reader :name, :species
       if cat.owner = self
       cat.mood = "nervous"
       cat.owner = nil
+      Cat.all.clear
       end
-      binding.pry
-
     end
 
-    self.dogs.each do |dog|
+    Dog.all.each do |dog|
+      if dog.owner = self
       dog.mood = "nervous"
       dog.owner = nil
+      Dog.all.clear
+      end
     end
   end
 
+  def list_pets
+   "I have #{self.dogs.count} dog(s), and #{self.cats.count} cat(s)."
+  end
 
 
 end
